@@ -1,0 +1,79 @@
+OMR (Optical Mark Recognition) System
+
+Prerequisites
+- Recommended Python version: **3.12.1**
+
+Installation
+Download and install the required dependencies using `pip`:
+
+pip install -r requirements.txt
+
+(note: might need to install zbar, for example "sudo apt-get install libzbar0")
+
+Usage
+1. Running the Scanner
+
+To process the scanned forms and extract data, run the main script from the root directory:
+
+python OMR.py
+
+Optional parameters:
+
+    -f, --file_name: Path to the pdf containing scans. (Default: scans_to_recognize/version_1.pdf)
+
+    -r, --results_dir: Directory where the results will be saved. (Default: results)
+
+    -p, --prefix: Prefix to be used for the output files. (Default: scan)
+
+    -d, --dpi: DPI used for rendering PDF pages to images. Higher DPI means larger resolution. (Default: 200)
+
+    -m, --model_path: Path to the pre-trained model for detecting crosses. (Default: neural_network/data/models/dynamic_cnn.pth)
+
+Example:
+
+python OMR.py -f "./custom_scans.pdf" -r "./output_folder" -p "test_scan_" -d 300 -m "./models/my_custom_model.pth"
+
+Output:
+This creates a results directory containing visualizations of the processed scans and a JSON file with the extracted data.
+This JSON is crucial for the subsequent debugging and evaluation phases.
+
+2. Evaluating the Results
+
+To compare the extracted data against the correct answers and generate a final score, run the evaluation script:
+
+python evaluate_score.py
+
+Optional parameters:
+
+    -r1, --results: Path to the scan_results JSON file. (Default: ./results/scan_results.json)
+
+    -r2, --reference: Path to the reference_answers JSON file. (Default: ./reference_answers.json)
+
+    -o, --output_csv: Path to the output CSV file for final scores. (Default: ./results/final_scores.csv)
+
+Example:
+
+python evaluate_score.py -r1 "./results/my_scan_results.json" -r2 "./custom_reference.json" -o "./results/class_A_scores.csv"
+
+Output:
+The script compares both JSON files and generates a CSV file containing the computed scores for each scan.
+Additionally, it updates the processed scanned images by drawing the final score and a legend directly onto them.
+
+Advanced: Training a New Neural Network (Optional)
+
+If you need to retrain or fine-tune the underlying neural network, you can use the provided training tools.
+
+    Main Script: ./neural_network/training_dataset/tune_network.py
+
+    Parameters: Configured inside ./neural_network/training_dataset/TRAINING_CONSTANTS.py
+
+Data Format Requirements:
+
+    Place your training images inside: ./neural_network/data/images
+
+    Provide the corresponding labels in: ./neural_network/data/labels.csv
+
+The CSV file must follow the filename,label structure (for example: 000.png,1).
+
+Output:
+By default, the newly trained model will be saved to the ./neural_network/data/models directory.
