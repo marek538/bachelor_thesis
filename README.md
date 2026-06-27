@@ -18,7 +18,3 @@ This project digitizes and evaluates scanned answer sheets using a hybrid approa
 * **Deep Learning:** PyTorch
 * **Optimization:** Optuna (Hyperparameter tuning)
 
-## 📊 Performance & Impact
-* Achieved **100% classification accuracy** on the validation dataset.
-* Reduced manual grading workload to near zero: only **~0.55%** of all processed cells trigger the manual fallback mechanism.
-* Fully production-ready and prepared for real-world deployment.
